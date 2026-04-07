@@ -240,7 +240,7 @@ void jogo_gousmas() {
     printf("\n--- gousmas war ---\n");
 
     do {
-        // INICIALIZAÇÃO
+        
         furia1_a = 1; viva1_a = 1;
         furia1_b = 1; viva1_b = 1;
         furia2_a = 1; viva2_a = 1;
