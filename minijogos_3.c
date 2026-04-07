@@ -251,7 +251,7 @@ void jogo_gousmas() {
 
         while (fim == 0) {
 
-            // ESTADO
+            
             printf("\n--- estado atual ---\n");
 
             printf("jogador 1: ");
@@ -264,13 +264,11 @@ void jogo_gousmas() {
 
             printf("\nvez do jogador %d\n", turno + 1);
 
-            // AÇÃO
+            
             printf("acao: 1) atacar  2) dividir\n");
             scanf("%d", &acao);
 
-            // =====================
-            // ATAQUE (CORRIGIDO)
-            // =====================
+      
             if (acao == 1) {
 
                 printf("gousma atacante (1 ou 2): ");
@@ -279,11 +277,11 @@ void jogo_gousmas() {
                 printf("gousma alvo (1 ou 2): ");
                 scanf("%d", &alvo);
 
-                // 🔹 define valores
+               
                 int valor_ataque;
 
                 if (turno == 0) {
-                    // jogador 1 atacando
+                    
                     if (atacante == 1 && viva1_a) valor_ataque = furia1_a;
                     else if (atacante == 2 && viva1_b) valor_ataque = furia1_b;
                     else {
@@ -315,7 +313,7 @@ void jogo_gousmas() {
                     }
 
                 } else {
-                    // jogador 2 atacando
+                    
                     if (atacante == 1 && viva2_a) valor_ataque = furia2_a;
                     else if (atacante == 2 && viva2_b) valor_ataque = furia2_b;
                     else {
@@ -348,9 +346,7 @@ void jogo_gousmas() {
                 }
             }
 
-            // =====================
-            // DIVISÃO
-            // =====================
+            
             else if (acao == 2) {
 
                 if (turno == 0) {
@@ -428,7 +424,7 @@ void jogo_gousmas() {
                 continue;
             }
 
-            // VERIFICA VITÓRIA
+            
             vivas1 = viva1_a + viva1_b;
             vivas2 = viva2_a + viva2_b;
 
@@ -440,7 +436,7 @@ void jogo_gousmas() {
                 fim = 1;
             }
 
-            //  TROCA TURNO
+           
             turno = (turno == 0) ? 1 : 0;
         }
 
