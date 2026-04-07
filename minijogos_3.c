@@ -127,8 +127,8 @@ void jogo_cobra() {
 
     do {
         printf("escolha o nome do jogador 1:\n");
-        printf("1) indiana jones\n2) lara croft\n3) howard carter\n");
-        printf("4) evie carnahan\n5) rick o'connell\n6) nefertiti\n7) ramses\n");
+        printf("1) link\n2) lara croft\n3) zoro\n");
+        printf("4) ellie williams\n5) leon kennedy\n6) ada wong\n7) luffy\n");
         printf("jogador 1: ");
         scanf("%d", &jogador1);
         while (jogador1 < 1 || jogador1 > 7) {
