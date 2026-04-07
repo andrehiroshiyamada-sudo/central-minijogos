@@ -1,4 +1,4 @@
-##1. Pergunta e Resposta
+## Pergunta e Resposta
 
 Um jogo de quiz com perguntas de múltipla escolha.
 
@@ -15,7 +15,7 @@ Estruturas condicionais (if)
 Variável acumuladora (pontuação)
 Entrada de dados com scanf
 
-##2. Cobra na Caixa
+## Cobra na Caixa
 
 Um jogo para dois jogadores baseado em sorte e estratégia.
 
@@ -34,7 +34,7 @@ Números aleatórios (rand)
 Estrutura de repetição (while)
 Controle de turno
 
-##3. Gousmas War
+## Gousmas War
 
 Um jogo estratégico entre dois jogadores com controle de estado.
 
