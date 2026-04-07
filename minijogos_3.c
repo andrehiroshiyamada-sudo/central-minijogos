@@ -232,17 +232,15 @@ void jogo_cobra() {
 void jogo_gousmas() {
     int furia1_a, furia1_b, furia2_a, furia2_b;
     int viva1_a, viva1_b, viva2_a, viva2_b;
-    int turno, fim, jogar, acao;
-    int atacante, alvo, transferir;
+
+    int turno, fim, jogar;
+    int acao, atacante, alvo, transferir;
     int vivas1, vivas2;
 
     printf("\n--- gousmas war ---\n");
-    printf("cada jogador tem 2 gousmas com furia 1.\n");
-    printf("ataque para somar sua furia a uma gousma inimiga.\n");
-    printf("se a furia passar de 5 a gousma se desintegra.\n");
-    printf("divisao: divide uma gousma em duas (so quando tiver 1 gousma viva).\n\n");
 
     do {
+        // INICIALIZAÇÃO
         furia1_a = 1; viva1_a = 1;
         furia1_b = 1; viva1_b = 1;
         furia2_a = 1; viva2_a = 1;
@@ -252,148 +250,202 @@ void jogo_gousmas() {
         fim = 0;
 
         while (fim == 0) {
+
+            // ESTADO
             printf("\n--- estado atual ---\n");
+
             printf("jogador 1: ");
-            if (viva1_a == 1) printf("[ga: furia %d]  ", furia1_a);
-            else              printf("[ga: morta]  ");
-            if (viva1_b == 1) printf("[gb: furia %d]", furia1_b);
-            else              printf("[gb: morta]");
+            printf(viva1_a ? "[ga: %d] " : "[ga: morta] ", furia1_a);
+            printf(viva1_b ? "[gb: %d]\n" : "[gb: morta]\n", furia1_b);
 
-            printf("\njogador 2: ");
-            if (viva2_a == 1) printf("[ga: furia %d]  ", furia2_a);
-            else              printf("[ga: morta]  ");
-            if (viva2_b == 1) printf("[gb: furia %d]", furia2_b);
-            else              printf("[gb: morta]");
-            printf("\n\n");
+            printf("jogador 2: ");
+            printf(viva2_a ? "[ga: %d] " : "[ga: morta] ", furia2_a);
+            printf(viva2_b ? "[gb: %d]\n" : "[gb: morta]\n", furia2_b);
 
-            if (turno == 0) {
-                printf("vez do jogador 1.\n");
-            } else {
-                printf("vez do jogador 2.\n");
-            }
+            printf("\nvez do jogador %d\n", turno + 1);
 
-            printf("acao: 1) atacar  2) dividir\nescolha: ");
+            // AÇÃO
+            printf("acao: 1) atacar  2) dividir\n");
             scanf("%d", &acao);
 
+            // =====================
+            // ATAQUE (CORRIGIDO)
+            // =====================
             if (acao == 1) {
-                printf("qual das suas gousmas vai atacar? (1 = ga / 2 = gb): ");
+
+                printf("gousma atacante (1 ou 2): ");
                 scanf("%d", &atacante);
 
-                if (turno == 0) {
-                    if (atacante == 1 && viva1_a == 0) { printf("gousma morta!\n"); continue; }
-                    if (atacante == 2 && viva1_b == 0) { printf("gousma morta!\n"); continue; }
-                } else {
-                    if (atacante == 1 && viva2_a == 0) { printf("gousma morta!\n"); continue; }
-                    if (atacante == 2 && viva2_b == 0) { printf("gousma morta!\n"); continue; }
-                }
-
-                printf("qual gousma inimiga vai atacar? (1 = ga / 2 = gb): ");
+                printf("gousma alvo (1 ou 2): ");
                 scanf("%d", &alvo);
 
-                if (turno == 0) {
-                    if (alvo == 1 && viva2_a == 0) { printf("gousma morta!\n"); continue; }
-                    if (alvo == 2 && viva2_b == 0) { printf("gousma morta!\n"); continue; }
-                } else {
-                    if (alvo == 1 && viva1_a == 0) { printf("gousma morta!\n"); continue; }
-                    if (alvo == 2 && viva1_b == 0) { printf("gousma morta!\n"); continue; }
-                }
+                // 🔹 define valores
+                int valor_ataque;
 
                 if (turno == 0) {
-                    if (alvo == 1) {
-                        if (atacante == 1) furia2_a += furia1_a;
-                        else               furia2_a += furia1_b;
-                        printf("nova furia da ga do jogador 2: %d\n", furia2_a);
-                        if (furia2_a > 5) { viva2_a = 0; furia2_a = 0; printf("ga do jogador 2 se desintegrou!\n"); }
-                    } else {
-                        if (atacante == 1) furia2_b += furia1_a;
-                        else               furia2_b += furia1_b;
-                        printf("nova furia da gb do jogador 2: %d\n", furia2_b);
-                        if (furia2_b > 5) { viva2_b = 0; furia2_b = 0; printf("gb do jogador 2 se desintegrou!\n"); }
+                    // jogador 1 atacando
+                    if (atacante == 1 && viva1_a) valor_ataque = furia1_a;
+                    else if (atacante == 2 && viva1_b) valor_ataque = furia1_b;
+                    else {
+                        printf("gousma invalida!\n");
+                        continue;
                     }
+
+                    if (alvo == 1 && viva2_a) {
+                        furia2_a += valor_ataque;
+
+                        if (furia2_a > 5) {
+                            viva2_a = 0;
+                            furia2_a = 0;
+                            printf("gousma 2A morreu!\n");
+                        }
+                    }
+                    else if (alvo == 2 && viva2_b) {
+                        furia2_b += valor_ataque;
+
+                        if (furia2_b > 5) {
+                            viva2_b = 0;
+                            furia2_b = 0;
+                            printf("gousma 2B morreu!\n");
+                        }
+                    }
+                    else {
+                        printf("alvo invalido!\n");
+                        continue;
+                    }
+
                 } else {
-                    if (alvo == 1) {
-                        if (atacante == 1) furia1_a += furia2_a;
-                        else               furia1_a += furia2_b;
-                        printf("nova furia da ga do jogador 1: %d\n", furia1_a);
-                        if (furia1_a > 5) { viva1_a = 0; furia1_a = 0; printf("ga do jogador 1 se desintegrou!\n"); }
-                    } else {
-                        if (atacante == 1) furia1_b += furia2_a;
-                        else               furia1_b += furia2_b;
-                        printf("nova furia da gb do jogador 1: %d\n", furia1_b);
-                        if (furia1_b > 5) { viva1_b = 0; furia1_b = 0; printf("gb do jogador 1 se desintegrou!\n"); }
+                    // jogador 2 atacando
+                    if (atacante == 1 && viva2_a) valor_ataque = furia2_a;
+                    else if (atacante == 2 && viva2_b) valor_ataque = furia2_b;
+                    else {
+                        printf("gousma invalida!\n");
+                        continue;
+                    }
+
+                    if (alvo == 1 && viva1_a) {
+                        furia1_a += valor_ataque;
+
+                        if (furia1_a > 5) {
+                            viva1_a = 0;
+                            furia1_a = 0;
+                            printf("gousma 1A morreu!\n");
+                        }
+                    }
+                    else if (alvo == 2 && viva1_b) {
+                        furia1_b += valor_ataque;
+
+                        if (furia1_b > 5) {
+                            viva1_b = 0;
+                            furia1_b = 0;
+                            printf("gousma 1B morreu!\n");
+                        }
+                    }
+                    else {
+                        printf("alvo invalido!\n");
+                        continue;
                     }
                 }
+            }
 
-            } else if (acao == 2) {
+            // =====================
+            // DIVISÃO
+            // =====================
+            else if (acao == 2) {
+
                 if (turno == 0) {
                     vivas1 = viva1_a + viva1_b;
-                    if (vivas1 >= 2) { printf("voce ja tem 2 gousmas!\n"); continue; }
-                    if (viva1_a == 1) {
-                        if (furia1_a < 2) { printf("furia insuficiente para dividir.\n"); continue; }
-                        printf("dividir ga (furia %d). quanto transferir para gb? (1 a %d): ", furia1_a, furia1_a - 1);
+
+                    if (vivas1 == 2) {
+                        printf("ja tem 2 gousmas!\n");
+                        continue;
+                    }
+
+                    if (viva1_a) {
+                        printf("transferir de ga (%d): ", furia1_a);
                         scanf("%d", &transferir);
-                        if (transferir < 1 || transferir >= furia1_a) { printf("valor invalido.\n"); continue; }
+
+                        if (transferir <= 0 || transferir >= furia1_a) {
+                            printf("valor invalido!\n");
+                            continue;
+                        }
+
                         furia1_b = transferir;
                         furia1_a -= transferir;
                         viva1_b = 1;
-                        printf("divisao feita! ga(furia %d) gb(furia %d)\n", furia1_a, furia1_b);
                     } else {
-                        if (furia1_b < 2) { printf("furia insuficiente para dividir.\n"); continue; }
-                        printf("dividir gb (furia %d). quanto transferir para ga? (1 a %d): ", furia1_b, furia1_b - 1);
+                        printf("transferir de gb (%d): ", furia1_b);
                         scanf("%d", &transferir);
-                        if (transferir < 1 || transferir >= furia1_b) { printf("valor invalido.\n"); continue; }
+
+                        if (transferir <= 0 || transferir >= furia1_b) {
+                            printf("valor invalido!\n");
+                            continue;
+                        }
+
                         furia1_a = transferir;
                         furia1_b -= transferir;
                         viva1_a = 1;
-                        printf("divisao feita! ga(furia %d) gb(furia %d)\n", furia1_a, furia1_b);
                     }
+
                 } else {
                     vivas2 = viva2_a + viva2_b;
-                    if (vivas2 >= 2) { printf("voce ja tem 2 gousmas!\n"); continue; }
-                    if (viva2_a == 1) {
-                        if (furia2_a < 2) { printf("furia insuficiente para dividir.\n"); continue; }
-                        printf("dividir ga (furia %d). quanto transferir para gb? (1 a %d): ", furia2_a, furia2_a - 1);
+
+                    if (vivas2 == 2) {
+                        printf("ja tem 2 gousmas!\n");
+                        continue;
+                    }
+
+                    if (viva2_a) {
+                        printf("transferir de ga (%d): ", furia2_a);
                         scanf("%d", &transferir);
-                        if (transferir < 1 || transferir >= furia2_a) { printf("valor invalido.\n"); continue; }
+
+                        if (transferir <= 0 || transferir >= furia2_a) {
+                            printf("valor invalido!\n");
+                            continue;
+                        }
+
                         furia2_b = transferir;
                         furia2_a -= transferir;
                         viva2_b = 1;
-                        printf("divisao feita! ga(furia %d) gb(furia %d)\n", furia2_a, furia2_b);
                     } else {
-                        if (furia2_b < 2) { printf("furia insuficiente para dividir.\n"); continue; }
-                        printf("dividir gb (furia %d). quanto transferir para ga? (1 a %d): ", furia2_b, furia2_b - 1);
+                        printf("transferir de gb (%d): ", furia2_b);
                         scanf("%d", &transferir);
-                        if (transferir < 1 || transferir >= furia2_b) { printf("valor invalido.\n"); continue; }
+
+                        if (transferir <= 0 || transferir >= furia2_b) {
+                            printf("valor invalido!\n");
+                            continue;
+                        }
+
                         furia2_a = transferir;
                         furia2_b -= transferir;
                         viva2_a = 1;
-                        printf("divisao feita! ga(furia %d) gb(furia %d)\n", furia2_a, furia2_b);
                     }
                 }
-            } else {
-                printf("acao invalida.\n");
+            }
+
+            else {
+                printf("acao invalida!\n");
                 continue;
             }
 
+            // VERIFICA VITÓRIA
             vivas1 = viva1_a + viva1_b;
             vivas2 = viva2_a + viva2_b;
 
             if (vivas1 == 0) {
-                printf("*** jogador 1 perdeu todas as gousmas! jogador 2 venceu! ***\n\n");
+                printf("*** jogador 2 venceu ***\n");
                 fim = 1;
             } else if (vivas2 == 0) {
-                printf("*** jogador 2 perdeu todas as gousmas! jogador 1 venceu! ***\n\n");
+                printf("*** jogador 1 venceu ***\n");
                 fim = 1;
             }
 
-            if (turno == 0) turno = 1;
-            else            turno = 0;
+            //  TROCA TURNO
+            turno = (turno == 0) ? 1 : 0;
         }
 
-        printf("deseja jogar novamente? (1 - sim / 0 - nao): ");
+        printf("jogar novamente? ");
         scanf("%d", &jogar);
 
     } while (jogar == 1);
-
-    printf("voltando ao menu principal...\n\n");
 }
